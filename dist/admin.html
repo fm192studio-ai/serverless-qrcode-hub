@@ -254,6 +254,48 @@
     </form>
   </dialog>
 
+  <dialog id="static-qr-modal" class="modal">
+    <div class="modal-box modal-box-responsive max-w-2xl">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <h3 class="text-lg font-bold" data-i18n="static_qr.title">固定二维码生成器</h3>
+      
+      <div class="mt-4 flex flex-col md:flex-row gap-6">
+        <div class="flex-1 space-y-4">
+          <button id="static-qr-upload-btn" type="button" class="dropzone flex min-h-32 w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed border-primary/40 bg-base-200 p-4 text-center hover:border-primary hover:bg-base-200/80">
+            <div class="text-sm font-medium" data-i18n="static_qr.upload.hint">拖拽或点击上传二维码图片</div>
+          </button>
+          
+          <label class="form-control">
+            <span class="label-text mb-2" data-i18n="static_qr.data.label">二维码内容</span>
+            <textarea id="static-qr-data" class="textarea textarea-bordered h-32 w-full font-mono text-sm" placeholder="可手动输入 WIFI:..., BEGIN:VCARD... 等格式，或通过上方上传解析" data-i18n-ph="static_qr.data.placeholder"></textarea>
+          </label>
+
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <select id="static-qr-dots-style" class="select select-bordered w-full sm:w-48">
+              <option value="dots" data-i18n="qr_modal.dots.dots">圆点</option>
+              <option value="rounded" data-i18n="qr_modal.dots.rounded">圆角</option>
+              <option value="classy" data-i18n="qr_modal.dots.classy">优雅</option>
+              <option value="classy-rounded" data-i18n="qr_modal.dots.classy_rounded">优雅圆角</option>
+              <option value="square" data-i18n="qr_modal.dots.square">方形</option>
+              <option value="extra-rounded" data-i18n="qr_modal.dots.extra_rounded">超圆角</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex w-full md:w-64 flex-col items-center gap-4">
+          <div id="static-qr-container" class="rounded-2xl bg-white p-4 shadow-sm w-full flex justify-center items-center aspect-square border border-base-300"></div>
+          <button id="static-qr-download-btn" type="button" class="btn btn-primary w-full" data-i18n="static_qr.download">下载</button>
+        </div>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button data-i18n="qr_modal.close">关闭</button>
+    </form>
+  </dialog>
+  <input id="static-qr-file" type="file" accept="image/*" class="hidden">
+
   <input id="qr-file" type="file" accept="image/*" class="hidden">
   <input id="edit-qr-file" type="file" accept="image/*" class="hidden">
   <input id="import-file" type="file" accept="application/json" class="hidden">
@@ -283,6 +325,7 @@
               <path id="theme-toggle-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
             </svg>
           </button>
+          <button id="static-qr-open-btn" class="btn btn-primary btn-sm" type="button" data-i18n="static_qr.title">固定二维码</button>
           <button id="logout-btn" class="btn btn-error btn-sm" type="button" data-i18n="nav.logout">退出登录</button>
         </div>
       </div>
@@ -558,6 +601,14 @@
         'nav.title': '二维码短链管理后台',
         'nav.subtitle': '更顺手地管理短链、微信群二维码和访问数据',
         'nav.logout': '退出登录',
+
+        'static_qr.title': '固定二维码生成器',
+        'static_qr.upload.hint': '拖拽或点击上传二维码图片',
+        'static_qr.data.label': '二维码内容',
+        'static_qr.data.placeholder': '可手动输入 WIFI:..., BEGIN:VCARD... 等格式，或通过上方上传解析',
+        'static_qr.generate': '生成二维码',
+        'static_qr.download': '下载',
+
         'theme.toggle': '切换主题',
         'metric.total': '总条目',
         'metric.active': '启用中',
@@ -696,6 +747,14 @@
         'nav.title': 'QR Code & Short Link Manager',
         'nav.subtitle': 'Manage short links, WeChat QR codes and visit data',
         'nav.logout': 'Logout',
+
+        'static_qr.title': 'Static QR Generator',
+        'static_qr.upload.hint': 'Drag or click to upload QR code',
+        'static_qr.data.label': 'QR Code Content',
+        'static_qr.data.placeholder': 'Enter WIFI:..., BEGIN:VCARD..., etc., or upload an image above',
+        'static_qr.generate': 'Generate QR Code',
+        'static_qr.download': 'Download',
+
         'theme.toggle': 'Toggle theme',
         'metric.total': 'Total',
         'metric.active': 'Active',
@@ -2273,6 +2332,104 @@
       }
       if (button.dataset.action === 'delete') {
         openDeleteModal([path]);
+      }
+    }
+
+    
+    let staticQrInstance = null;
+
+    function getStaticQrOptions(data, style) {
+      return {
+        width: 300,
+        height: 300,
+        type: 'svg',
+        data: data || 'https://example.com',
+        margin: 10,
+        qrOptions: {
+          typeNumber: 0,
+          mode: 'Byte',
+          errorCorrectionLevel: 'Q'
+        },
+        dotsOptions: {
+          color: '#000000',
+          type: style
+        },
+        backgroundOptions: {
+          color: '#ffffff',
+        }
+      };
+    }
+
+    function renderStaticQr() {
+      const container = document.getElementById('static-qr-container');
+      const data = document.getElementById('static-qr-data').value.trim();
+      const style = document.getElementById('static-qr-dots-style').value;
+      
+      container.innerHTML = '';
+      if (!data) return;
+
+      staticQrInstance = new QRCodeStyling(getStaticQrOptions(data, style));
+      staticQrInstance.append(container);
+    }
+
+    document.getElementById('static-qr-open-btn').addEventListener('click', () => {
+      document.getElementById('static-qr-modal').showModal();
+      if (document.getElementById('static-qr-data').value) {
+        renderStaticQr();
+      }
+    });
+
+    document.getElementById('static-qr-data').addEventListener('input', () => {
+      renderStaticQr();
+    });
+
+    document.getElementById('static-qr-dots-style').addEventListener('change', () => {
+      renderStaticQr();
+    });
+
+    document.getElementById('static-qr-download-btn').addEventListener('click', () => {
+      if (!staticQrInstance) return;
+      const data = document.getElementById('static-qr-data').value.trim();
+      if (!data) return;
+      staticQrInstance.download({ name: 'qr-code', extension: 'png' });
+    });
+
+    const staticQrUploadBtn = document.getElementById('static-qr-upload-btn');
+    const staticQrFileInput = document.getElementById('static-qr-file');
+
+    staticQrUploadBtn.addEventListener('click', () => staticQrFileInput.click());
+
+    staticQrUploadBtn.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      staticQrUploadBtn.classList.add('dragover', 'border-primary', 'bg-base-200/80');
+    });
+    staticQrUploadBtn.addEventListener('dragleave', () => {
+      staticQrUploadBtn.classList.remove('dragover', 'border-primary', 'bg-base-200/80');
+    });
+    staticQrUploadBtn.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      staticQrUploadBtn.classList.remove('dragover', 'border-primary', 'bg-base-200/80');
+      const file = e.dataTransfer?.files?.[0];
+      if (file) handleStaticQrFile(file);
+    });
+
+    staticQrFileInput.addEventListener('change', (e) => {
+      const file = e.target.files?.[0];
+      if (file) handleStaticQrFile(file);
+      e.target.value = '';
+    });
+
+    async function handleStaticQrFile(file) {
+      try {
+        staticQrUploadBtn.classList.add('opacity-50', 'pointer-events-none');
+        const { text } = await decodeQrFile(file);
+        document.getElementById('static-qr-data').value = text;
+        renderStaticQr();
+        showAlert(t('alert.qr_success'), 'success');
+      } catch (error) {
+        showAlert(error.message, 'error');
+      } finally {
+        staticQrUploadBtn.classList.remove('opacity-50', 'pointer-events-none');
       }
     }
 
