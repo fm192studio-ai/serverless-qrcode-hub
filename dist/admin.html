@@ -278,7 +278,7 @@
             <textarea id="static-qr-data" class="textarea textarea-bordered h-32 w-full font-mono text-sm" placeholder="可手动输入内容或通过上方上传解析"></textarea>
           </div>
 
-          <div id="static-qr-form-vcard" class="hidden flex flex-col gap-2 mt-2">
+          <div id="static-qr-form-vcard" class="hidden flex-col gap-2 mt-2">
             <div class="flex gap-2">
               <input id="vcard-ln" type="text" class="input input-bordered input-sm w-full" data-i18n-ph="vcard.ln" placeholder="姓氏">
               <input id="vcard-fn" type="text" class="input input-bordered input-sm w-full" data-i18n-ph="vcard.fn" placeholder="名字">
@@ -291,7 +291,7 @@
             <textarea id="vcard-addr" class="textarea textarea-bordered textarea-sm w-full" data-i18n-ph="vcard.addr" placeholder="地址"></textarea>
           </div>
 
-          <div id="static-qr-form-wifi" class="hidden flex flex-col gap-2 mt-2">
+          <div id="static-qr-form-wifi" class="hidden flex-col gap-2 mt-2">
             <input id="wifi-ssid" type="text" class="input input-bordered input-sm w-full" data-i18n-ph="wifi.ssid" placeholder="网络名称 (SSID)">
             <input id="wifi-pw" type="text" class="input input-bordered input-sm w-full" data-i18n-ph="wifi.pw" placeholder="密码">
             <select id="wifi-type" class="select select-bordered select-sm w-full">
@@ -305,7 +305,15 @@
             </label>
           </div>
 
-          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div id="static-qr-form-location" class="hidden flex flex-col gap-2 mt-2">
+            <input id="location-query" type="text" class="input input-bordered input-sm w-full" data-i18n-ph="location.query" placeholder="地点名称/地址">
+            <div class="flex gap-2">
+              <input id="location-lat" type="number" step="any" class="input input-bordered input-sm w-full" data-i18n-ph="location.lat" placeholder="纬度 (可选)">
+              <input id="location-lng" type="number" step="any" class="input input-bordered input-sm w-full" data-i18n-ph="location.lng" placeholder="经度 (可选)">
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mt-2">
             <select id="static-qr-dots-style" class="select select-bordered w-full sm:w-48">
               <option value="dots" data-i18n="qr_modal.dots.dots">圆点</option>
               <option value="rounded" data-i18n="qr_modal.dots.rounded">圆角</option>
@@ -358,8 +366,8 @@
               <path id="theme-toggle-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
             </svg>
           </button>
-          <button id="static-qr-open-btn" class="btn btn-primary btn-sm" type="button" data-i18n="static_qr.title">固定二维码</button>
-          <button id="logout-btn" class="btn btn-error btn-sm" type="button" data-i18n="nav.logout">退出登录</button>
+          <button <button id="static-qr-open-btn" class="btn btn-primary btn-sm" type="button" data-i18n="static_qr.title">固定二维码</button>
+          id="logout-btn" class="btn btn-error btn-sm" type="button" data-i18n="nav.logout">退出登录</button>
         </div>
       </div>
     </div>
@@ -638,15 +646,14 @@
         'static_qr.title': '固定二维码生成器',
         'static_qr.upload.hint': '拖拽或点击上传二维码图片',
         'static_qr.data.label': '二维码内容',
-        'static_qr.data.placeholder': '可手动输入 WIFI:..., BEGIN:VCARD... 等格式，或通过上方上传解析',
-        
+        'static_qr.data.placeholder': '可手动输入内容或通过上方上传解析',
+        'static_qr.generate': '生成二维码',
+        'static_qr.download': '下载',
         'static_qr.type.text': '文本',
         'static_qr.type.vcard': '名片',
         'static_qr.type.wifi': 'WiFi',
         'static_qr.type.location': '导航',
-        'location.lat': '纬度 (可选)',
-        'location.lng': '经度 (可选)',
-        'location.query': '地点名称/地址','vcard.ln': '姓氏',
+        'vcard.ln': '姓氏',
         'vcard.fn': '名字',
         'vcard.org': '公司',
         'vcard.title': '职位',
@@ -660,9 +667,9 @@
         'wifi.type.wep': 'WEP',
         'wifi.type.nopass': '无密码',
         'wifi.hidden': '隐藏网络',
-
-        'static_qr.generate': '生成二维码',
-        'static_qr.download': '下载',
+        'location.lat': '纬度 (可选)',
+        'location.lng': '经度 (可选)',
+        'location.query': '地点名称/地址',
 
         'theme.toggle': '切换主题',
         'metric.total': '总条目',
@@ -806,15 +813,13 @@
         'static_qr.title': 'Static QR Generator',
         'static_qr.upload.hint': 'Drag or click to upload QR code',
         'static_qr.data.label': 'QR Code Content',
-        'static_qr.data.placeholder': 'Enter WIFI:..., BEGIN:VCARD..., etc., or upload an image above',
-        
+        'static_qr.data.placeholder': 'Enter content or upload an image above',
+        'static_qr.generate': 'Generate QR Code',
+        'static_qr.download': 'Download',
         'static_qr.type.text': 'Text',
         'static_qr.type.vcard': 'vCard',
         'static_qr.type.wifi': 'WiFi',
         'static_qr.type.location': 'Location',
-        'location.lat': 'Latitude (Optional)',
-        'location.lng': 'Longitude (Optional)',
-        'location.query': 'Place Name / Address',
         'vcard.ln': 'Last Name',
         'vcard.fn': 'First Name',
         'vcard.org': 'Company',
@@ -829,9 +834,9 @@
         'wifi.type.wep': 'WEP',
         'wifi.type.nopass': 'No Password',
         'wifi.hidden': 'Hidden Network',
-
-        'static_qr.generate': 'Generate QR Code',
-        'static_qr.download': 'Download',
+        'location.lat': 'Latitude (Optional)',
+        'location.lng': 'Longitude (Optional)',
+        'location.query': 'Place Name / Address',
 
         'theme.toggle': 'Toggle theme',
         'metric.total': 'Total',
@@ -2221,11 +2226,6 @@
           applyLang();
           renderList();
           updateSelectionSummary();
-          // DaisyUI dropdown stays open via :focus-within on the .dropdown container.
-          // Must blur ALL focusable elements inside (including the <ul tabindex="0">),
-          // otherwise the dropdown remains visible even after clicking an option.
-          btn.closest('.dropdown')?.querySelectorAll('[tabindex]').forEach(el => el.blur());
-          document.activeElement?.blur();
         });
       });
 
@@ -2415,6 +2415,7 @@
 
     
     let staticQrInstance = null;
+    let currentStaticQrType = 'text';
 
     function getStaticQrOptions(data, style) {
       return {
@@ -2437,8 +2438,6 @@
         }
       };
     }
-
-    let currentStaticQrType = 'text';
 
     function buildVCardData() {
       const ln = document.getElementById('vcard-ln').value.trim();
@@ -2463,7 +2462,15 @@
       return vcard;
     }
 
-    
+    function buildWifiData() {
+      const ssid = document.getElementById('wifi-ssid').value.trim();
+      const pw = document.getElementById('wifi-pw').value.trim();
+      const type = document.getElementById('wifi-type').value;
+      const hidden = document.getElementById('wifi-hidden').checked ? 'true' : 'false';
+      if (!ssid) return '';
+      return 'WIFI:S:' + ssid + ';T:' + type + ';P:' + pw + ';H:' + hidden + ';;';
+    }
+
     function buildLocationData() {
       const query = document.getElementById('location-query').value.trim();
       const lat = document.getElementById('location-lat').value.trim() || '0';
@@ -2472,16 +2479,6 @@
       let geo = 'geo:' + lat + ',' + lng;
       if (query) geo += '?q=' + encodeURIComponent(query);
       return geo;
-    }
-
-    function buildWifiData() {
-      const ssid = document.getElementById('wifi-ssid').value.trim();
-      const pw = document.getElementById('wifi-pw').value.trim();
-      const type = document.getElementById('wifi-type').value;
-      const hidden = document.getElementById('wifi-hidden').checked ? 'true' : 'false';
-      
-      if (!ssid) return '';
-      return 'WIFI:S:' + ssid + ';T:' + type + ';P:' + pw + ';H:' + hidden + ';;';
     }
 
     function getActiveStaticQrData() {
@@ -2498,6 +2495,27 @@
       document.getElementById('static-qr-form-location').classList.toggle('hidden', currentStaticQrType !== 'location');
     }
 
+    function renderStaticQr() {
+      const container = document.getElementById('static-qr-container');
+      const data = getActiveStaticQrData();
+      const style = document.getElementById('static-qr-dots-style').value;
+      container.innerHTML = '';
+      if (!data) return;
+      staticQrInstance = new QRCodeStyling(getStaticQrOptions(data, style));
+      staticQrInstance.append(container);
+    }
+
+    // Attach listeners safely within a DOMContentLoaded block or just rely on the elements existing.
+    // They exist here because this script is inserted at the bottom of the body.
+    document.getElementById('static-qr-open-btn').addEventListener('click', () => {
+      document.getElementById('static-qr-modal').showModal();
+      updateStaticQrFormVisibility();
+      renderStaticQr();
+    });
+
+    document.getElementById('static-qr-data').addEventListener('input', renderStaticQr);
+    document.getElementById('static-qr-dots-style').addEventListener('change', renderStaticQr);
+
     document.querySelectorAll('#static-qr-tabs .tab').forEach(tab => {
       tab.addEventListener('click', (e) => {
         document.querySelectorAll('#static-qr-tabs .tab').forEach(t => t.classList.remove('tab-active'));
@@ -2509,8 +2527,43 @@
     });
 
     ['vcard-ln', 'vcard-fn', 'vcard-org', 'vcard-title', 'vcard-tel', 'vcard-email', 'vcard-url', 'vcard-addr', 'wifi-ssid', 'wifi-pw', 'wifi-type', 'wifi-hidden', 'location-query', 'location-lat', 'location-lng'].forEach(id => {
-      document.getElementById(id).addEventListener('input', renderStaticQr);
-      document.getElementById(id).addEventListener('change', renderStaticQr);
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', renderStaticQr);
+        el.addEventListener('change', renderStaticQr);
+      }
+    });
+
+    document.getElementById('static-qr-download-btn').addEventListener('click', () => {
+      if (!staticQrInstance) return;
+      const data = getActiveStaticQrData();
+      if (!data) return;
+      staticQrInstance.download({ name: 'qr-code', extension: 'png' });
+    });
+
+    const staticQrUploadBtn = document.getElementById('static-qr-upload-btn');
+    const staticQrFileInput = document.getElementById('static-qr-file');
+
+    staticQrUploadBtn.addEventListener('click', () => staticQrFileInput.click());
+
+    staticQrUploadBtn.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      staticQrUploadBtn.classList.add('dragover', 'border-primary', 'bg-base-200/80');
+    });
+    staticQrUploadBtn.addEventListener('dragleave', () => {
+      staticQrUploadBtn.classList.remove('dragover', 'border-primary', 'bg-base-200/80');
+    });
+    staticQrUploadBtn.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      staticQrUploadBtn.classList.remove('dragover', 'border-primary', 'bg-base-200/80');
+      const file = e.dataTransfer?.files?.[0];
+      if (file) handleStaticQrFile(file);
+    });
+
+    staticQrFileInput.addEventListener('change', (e) => {
+      const file = e.target.files?.[0];
+      if (file) handleStaticQrFile(file);
+      e.target.value = '';
     });
 
     function parseToForm(text) {
@@ -2524,7 +2577,6 @@
         document.getElementById('wifi-pw').value = pwMatch ? pwMatch[1] : '';
         document.getElementById('wifi-type').value = typeMatch ? typeMatch[1] : 'nopass';
         document.getElementById('wifi-hidden').checked = hiddenMatch && hiddenMatch[1] === 'true';
-      
       } else if (text.startsWith('geo:')) {
         document.querySelector('#static-qr-tabs .tab[data-qr-type="location"]').click();
         const coordsMatch = text.match(/geo:([-\d\.]+),([-\d\.]+)/);
@@ -2554,64 +2606,6 @@
         document.querySelector('#static-qr-tabs .tab[data-qr-type="text"]').click();
       }
     }
-
-    function renderStaticQr() {
-      const container = document.getElementById('static-qr-container');
-      const data = getActiveStaticQrData();
-      const style = document.getElementById('static-qr-dots-style').value;
-      
-      container.innerHTML = '';
-      if (!data) return;
-
-      staticQrInstance = new QRCodeStyling(getStaticQrOptions(data, style));
-      staticQrInstance.append(container);
-    }
-
-    document.getElementById('static-qr-open-btn').addEventListener('click', () => {
-      document.getElementById('static-qr-modal').showModal();
-      updateStaticQrFormVisibility();
-      renderStaticQr();
-    });
-
-    document.getElementById('static-qr-data').addEventListener('input', () => {
-      renderStaticQr();
-    });
-
-    document.getElementById('static-qr-dots-style').addEventListener('change', () => {
-      renderStaticQr();
-    });
-
-    document.getElementById('static-qr-download-btn').addEventListener('click', () => {
-      if (!staticQrInstance) return;
-      const data = document.getElementById('static-qr-data').value.trim();
-      if (!data) return;
-      staticQrInstance.download({ name: 'qr-code', extension: 'png' });
-    });
-
-    const staticQrUploadBtn = document.getElementById('static-qr-upload-btn');
-    const staticQrFileInput = document.getElementById('static-qr-file');
-
-    staticQrUploadBtn.addEventListener('click', () => staticQrFileInput.click());
-
-    staticQrUploadBtn.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      staticQrUploadBtn.classList.add('dragover', 'border-primary', 'bg-base-200/80');
-    });
-    staticQrUploadBtn.addEventListener('dragleave', () => {
-      staticQrUploadBtn.classList.remove('dragover', 'border-primary', 'bg-base-200/80');
-    });
-    staticQrUploadBtn.addEventListener('drop', async (e) => {
-      e.preventDefault();
-      staticQrUploadBtn.classList.remove('dragover', 'border-primary', 'bg-base-200/80');
-      const file = e.dataTransfer?.files?.[0];
-      if (file) handleStaticQrFile(file);
-    });
-
-    staticQrFileInput.addEventListener('change', (e) => {
-      const file = e.target.files?.[0];
-      if (file) handleStaticQrFile(file);
-      e.target.value = '';
-    });
 
     async function handleStaticQrFile(file) {
       try {
